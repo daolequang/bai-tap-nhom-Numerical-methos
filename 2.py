@@ -1,16 +1,45 @@
 """
-Phần 3 – Bài toán áp dụng và Lập trình Python
+Toàn - Phần 3
 Dữ liệu thực tế: Diện tích nhà (sq ft) và Giá bán (USD)
 Giải hệ phương trình chuẩn bằng MA TRẬN
+STT	Diện tích nhà (sq ft)	Giá bán (USD)
+1	2104	399,900
+2	1600	329,900
+3	2400	369,000
+4	1416	232,000
+5	3000	539,900
+6	1985	299,900
+7	1534	314,900
+8	1427	198,999
+9	1380	212,000
+10	1494	242,500
+11	1940	239,999
+12	2000	347,000
+13	1890	329,999
+14	4478	699,900
+15	1268	259,900
+16	2300	449,900
+17	1320	299,900
+18	1236	199,900
+19	2609	499,998
+20	3031	599,000
+21	1767	252,900
+22	1888	255,000
+23	1604	242,900
+24	1962	259,900
+25	3890	573,900
+26	1100	249,900
+27	1458	464,500
+28	2526	469,000
+29	2200	475,000
+30	2637	299,900
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
-# ==========================================
-# Bước 1: Khởi tạo dữ liệu thực tế (30 điểm)
-# ==========================================
+# Bước 1: Khởi tạo dữ liệu thực tế
 X = np.array([2104,1600,2400,1416,3000,1985,1534,1427,1380,1494,
               1940,2000,1890,4478,1268,2300,1320,1236,2609,3031,
               1767,1888,1604,1962,3890,1100,1458,2526,2200,2637], dtype=float)
@@ -24,18 +53,14 @@ n = len(X)
 X_col = X.reshape(-1, 1)
 y_col = y.reshape(-1, 1)
 
-# ==========================================
 # Bước 2: Hàm giải Hệ phương trình chuẩn
-# ==========================================
 def normal_equation(X_matrix, y_vector):
     """Giải (X^T X)·theta = X^T·y bằng np.linalg.solve (ổn định hơn inv)"""
     A = X_matrix.T.dot(X_matrix)
     b = X_matrix.T.dot(y_vector)
     return np.linalg.solve(A, b)
 
-# ==========================================
 # Bước 3: Huấn luyện 3 mô hình
-# ==========================================
 # Mô hình 1: Tuyến tính
 X_linear = np.c_[np.ones(n), X_col]
 theta_linear = normal_equation(X_linear, y_col)
@@ -54,9 +79,7 @@ A_exp = np.exp(theta_exp[0][0])
 B_exp = theta_exp[1][0]
 y_pred_exp = A_exp * np.exp(B_exp * X_col)
 
-# ==========================================
 # Bước 4: Tính toán sai số (MSE và RMSE)
-# ==========================================
 def calculate_errors(y_true, y_pred):
     mse = np.mean((y_true - y_pred) ** 2)
     return mse, np.sqrt(mse)
@@ -65,9 +88,7 @@ mse_lin,  rmse_lin  = calculate_errors(y_col, y_pred_linear)
 mse_quad, rmse_quad = calculate_errors(y_col, y_pred_quad)
 mse_exp,  rmse_exp  = calculate_errors(y_col, y_pred_exp)
 
-# ==========================================
 # Bước 5: In bảng so sánh
-# ==========================================
 models     = ["Tuyến tính (Bậc 1)", "Đa thức (Bậc 2)", "Hàm mũ"]
 mse_list   = [mse_lin,  mse_quad,  mse_exp]
 rmse_list  = [rmse_lin, rmse_quad, rmse_exp]
@@ -99,9 +120,7 @@ else:
     print(f"\n✔  Cải thiện rõ ràng {diff_pct:.2f}% → Nên dùng [{best_name}]")
 print()
 
-# ==========================================
-# Bước 6: Biểu đồ trực quan (6 subplot)
-# ==========================================
+# Bước 6: Biểu đồ trực quan
 COLORS = {"lin": "#2563EB", "quad": "#16A34A", "exp": "#DC2626"}
 
 a0_lin, a1_lin         = theta_linear.flatten()
