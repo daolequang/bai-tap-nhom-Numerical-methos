@@ -1,3 +1,5 @@
+#cách dùng mở terminal ghi, ko ghi []
+#streamlit run [đường dẫn file code]
 import streamlit as st
 import pandas as pd
 import numpy as np
