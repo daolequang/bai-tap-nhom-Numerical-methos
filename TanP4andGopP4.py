@@ -1,4 +1,4 @@
-#cách dùng mở terminal ghi, ko ghi []
+#cách dùng mở terminal ghi, ko ghi [] và #
 #streamlit run [đường dẫn file code]
 import streamlit as st
 import pandas as pd
