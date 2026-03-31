@@ -48,7 +48,7 @@ def linear_regression(x, y, n):
     sum_x2 = sum(xi**2 for xi in x)
     sum_xy = sum(x[i]*y[i] for i in range(n))
     matrix = [[float(n), sum_x, sum_y], [sum_x, sum_x2, sum_xy]]
-    return gauss_elimination(matrix) # Trả về a0, a1 (y = a0 + a1*x)
+    return gauss_elimination(matrix) #trả về a0, a1 (y = a0 + a1*x)
 
 def quadratic_regression(x, y, n):
     sum_x, sum_y = sum(x), sum(y)
@@ -62,7 +62,7 @@ def quadratic_regression(x, y, n):
         [sum_x,    sum_x2, sum_x3, sum_xy],
         [sum_x2,   sum_x3, sum_x4, sum_x2y]
     ]
-    return gauss_elimination(matrix) #Trả về a0, a1, a2 (y = a0 + a1*x + a2*x²)
+    return gauss_elimination(matrix) #trả về a0, a1, a2 (y = a0 + a1*x + a2*x²)
 
 def exponential_regression(x, y, n):
     Y = [math.log(yi) for yi in y]
@@ -72,7 +72,7 @@ def exponential_regression(x, y, n):
     matrix = [[float(n), sum_x, sum_Y], [sum_x, sum_x2, sum_xY]]
     A, b = gauss_elimination(matrix)
     a = math.exp(A)
-    return a, b # Trả về a, b (y = a * e^(b*x))
+    return a, b #trả về a, b (y = a * e^(b*x))
 
 #giao diện
 st.title("Hệ thống Phân tích & Xấp xỉ Hàm số")
@@ -276,7 +276,7 @@ with tab2:
             except ValueError:
                 st.error("Lỗi định dạng! Chỉ dùng số và dấu phẩy.")
 
-    # Tiến hành tính toán nếu dữ liệu hợp lệ
+    #tiến hành tính toán nếu dữ liệu hợp lệ
     if du_lieu_hop_le_tab2:
         if len(x_data_f2) < 3:
             st.warning("Vui lòng cung cấp ít nhất 3 điểm dữ liệu để có thể so sánh cả 3 mô hình (Bậc 2 cần tối thiểu 3 điểm).")
@@ -285,7 +285,7 @@ with tab2:
         else:
             n_f2 = len(x_data_f2)
 
-            # --- TÍNH TOÁN CÁC MÔ HÌNH ---
+            #tính toán các mô hình
             a0_lin, a1_lin = linear_regression(x_data_f2, y_data_f2, n_f2)
             y_pred_linear = [a0_lin + a1_lin * x for x in x_data_f2]
             mse_lin, rmse_lin = calculate_errors(y_data_f2, y_pred_linear)
@@ -298,13 +298,13 @@ with tab2:
             y_pred_exp = [a_exp * math.exp(b_exp * x) for x in x_data_f2]
             mse_exp, rmse_exp = calculate_errors(y_data_f2, y_pred_exp)
 
-            #Tự động thay đổi đơn vị theo dạng dữ liệu
+            #tự động thay đổi đơn vị theo dạng dữ liệu
             is_sample_data = (phuong_thuc_nhap_tab2 == "Dữ liệu mẫu (Case Study Giá nhà - 30 điểm)")
             don_vi_y = " (USD)" if is_sample_data else ""
             nhan_truc_x = "Diện tích (sq ft)" if is_sample_data else "Trục X"
             nhan_truc_y = "Giá bán (USD)" if is_sample_data else "Trục Y"
 
-            #Đánh giá và hiển thị bảng so sánh
+            #đánh giá và hiển thị bảng so sánh
             st.subheader("1. Bảng So Sánh Sai Số Các Mô Hình")
             df_eval = pd.DataFrame({
                 "Mô hình": ["Tuyến tính (y = a0 + a1*x)", "Đa thức Bậc 2", "Hàm mũ (y = a*e^(bx))"],
@@ -375,7 +375,7 @@ with tab2:
             rmse_list = [rmse_lin, rmse_quad, rmse_exp]
             bar_colors = [COLORS["lin"], COLORS["quad"], COLORS["exp"]]
 
-            #Xử lý tự động nhãn dán Bar chart
+            #xử lý tự động nhãn dán Bar chart
             if np.max(rmse_list) >= 10000:
                 bar_vals = [v/1e3 for v in rmse_list]
                 bar_label = f"RMSE (×10³{don_vi_y})"
