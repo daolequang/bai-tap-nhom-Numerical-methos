@@ -1,15 +1,16 @@
-# bai-tap-nhom-Numerical-methos
-##How to use?
-1. Open terminal and type
+# Bai-tap-nhom-Numerical-methods
+## How to Use
+2. Create a clone for file (if you don't have Git installed, so you can download file from Github web)
+```python
+git clone https://github.com/daolequang/bai-tap-nhom-Numerical-methos.git
+cd bai-tap-nhom-Numerical-methos
+```
+1. Open a terminal and type
 ```python
 pip install streamlit pandas numpy matplotlib
 ```
-3. Create a clone for file (If you don't have Git, so you can download in the Github web)
+3. Run the file with streamlit using the terminal
 ```python
-git clone 
+streamlit run <file_path>
 ```
-2. Run the file with streamlit using the terminal
-```python
-streamlit run <path của file>
-```
-*<path của file> có định dạng ..\..\final_file.py*
+*<file_path> have format ..\..\final_file.py*
