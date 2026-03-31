@@ -6,14 +6,11 @@ import math
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
-# ============================================================
-# 0. CẤU HÌNH TRANG
-# ============================================================
+#cấu hình trang
 st.set_page_config(page_title="Hệ thống Xấp xỉ Hàm số", page_icon="📈", layout="wide")
 
-# ============================================================
-# 1. HÀM TOÁN HỌC CỐT LÕI (TỪ FILE 2) - THUẬT TOÁN GAUSS
-# ============================================================
+
+#toán
 def gauss_elimination(matrix):
     m = len(matrix)
     for col in range(m):
@@ -80,12 +77,12 @@ def exponential_regression(x, y, n):
 # ============================================================
 # 2. GIAO DIỆN STREAMLIT CHÍNH
 # ============================================================
-st.title("📈 Hệ thống Phân tích & Xấp xỉ Hàm số")
+st.title("Hệ thống Phân tích & Xấp xỉ Hàm số")
 st.markdown("Hệ thống giải hệ phương trình chuẩn bằng phương pháp khử Gauss (tự xây dựng).")
 st.markdown("---")
 
 # TẠO 2 TABS
-tab1, tab2 = st.tabs(["🛠️ CÔNG CỤ TÙY CHỈNH (Nhập liệu)", "📊 BÀI TOÁN ĐÁNH GIÁ (So sánh 3 mô hình)"])
+tab1, tab2 = st.tabs(["CÔNG CỤ TÙY CHỈNH (Nhập liệu)", "BÀI TOÁN ĐÁNH GIÁ (So sánh 3 mô hình)"])
 
 # ============================================================
 # TAB 1: CODE CỦA FILE 1 (ÁP DỤNG THUẬT TOÁN FILE 2)
@@ -140,11 +137,11 @@ with tab1:
         cot_du_lieu, cot_mo_hinh = st.columns([1, 2])
         
         with cot_du_lieu:
-            st.subheader("📋 Dữ liệu đầu vào")
+            st.subheader("Dữ liệu đầu vào")
             st.dataframe(bang_du_lieu, use_container_width=True, height=180)
 
         with cot_mo_hinh:
-            st.subheader("🧠 Cấu hình Mô hình")
+            st.subheader("Cấu hình Mô hình")
             loai_ham = st.selectbox(
                 "2. Chọn dạng hàm xấp xỉ:",
                 ("Tuyến tính (y = a0 + a1*x)", "Đa thức bậc 2 (y = a0 + a1*x + a2*x²)", "Hàm mũ (y = a * e^(bx))")
@@ -188,7 +185,7 @@ with tab1:
         st.markdown("---")
 
         if ham_du_bao is not None:
-            st.subheader("📊 Trực quan hóa Đồ thị")
+            st.subheader("Trực quan hóa Đồ thị")
             hinh_ve, truc = plt.subplots(figsize=(10, 4))
             truc.set_facecolor('#F8F9FB')
             
@@ -209,7 +206,7 @@ with tab1:
             st.pyplot(hinh_ve)
             st.markdown("---")
             
-            st.subheader("🎯 Dự báo Giá trị (Prediction)")
+            st.subheader("Dự báo Giá trị (Prediction)")
             cot_nhap, cot_ket_qua = st.columns([1, 1])
             with cot_nhap:
                 x_moi = st.number_input("3. Nhập giá trị $x_{new}$:", value=float(x_nho_nhat), step=0.1)
@@ -218,21 +215,19 @@ with tab1:
                 st.metric(label=f"Giá trị dự báo $y_{{new}}$ khi $x = {x_moi}$", value=f"{y_moi:.4f}")
 
     elif bang_du_lieu is None or len(bang_du_lieu) == 0:
-        st.info("👆 Hãy cung cấp dữ liệu đầu vào ở phía trên để bắt đầu phân tích.")
+        st.info("Hãy cung cấp dữ liệu đầu vào ở phía trên để bắt đầu phân tích.")
     elif len(bang_du_lieu) <= 1:
         st.warning("Vui lòng nhập ít nhất 2 điểm dữ liệu để có thể xấp xỉ hàm số.")
 
-# ============================================================
-# TAB 2: CODE CỦA FILE 2 (SO SÁNH CÁC MÔ HÌNH)
-# ============================================================
+
+#code 2
 with tab2:
     st.header("Giải Bài Toán Hồi Quy Thực Nghiệm & So Sánh")
     st.markdown("""
     - **Thuật toán:** Giải hệ phương trình chuẩn bằng phương pháp khử Gauss (tự xây dựng).
     - **Đánh giá:** Tính toán và so sánh theo MSE, RMSE giữa 3 mô hình (Tuyến tính, Bậc 2, Hàm mũ).
     """)
-    
-    # 1. Tùy chọn nguồn dữ liệu cho Tab 2
+
     phuong_thuc_nhap_tab2 = st.selectbox(
         "Chọn nguồn dữ liệu để đánh giá:",
         ("Dữ liệu mẫu (Case Study Giá nhà - 30 điểm)", "Tải lên file CSV", "Nhập thủ công (x, y)"),
