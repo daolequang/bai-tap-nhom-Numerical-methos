@@ -62,7 +62,7 @@ def quadratic_regression(x, y, n):
         [sum_x,    sum_x2, sum_x3, sum_xy],
         [sum_x2,   sum_x3, sum_x4, sum_x2y]
     ]
-    return gauss_elimination(matrix) # Trả về a0, a1, a2 (y = a0 + a1*x + a2*x²)
+    return gauss_elimination(matrix) #Trả về a0, a1, a2 (y = a0 + a1*x + a2*x²)
 
 def exponential_regression(x, y, n):
     Y = [math.log(yi) for yi in y]
@@ -74,19 +74,15 @@ def exponential_regression(x, y, n):
     a = math.exp(A)
     return a, b # Trả về a, b (y = a * e^(b*x))
 
-# ============================================================
-# 2. GIAO DIỆN STREAMLIT CHÍNH
-# ============================================================
+#giao diện
 st.title("Hệ thống Phân tích & Xấp xỉ Hàm số")
 st.markdown("Hệ thống giải hệ phương trình chuẩn bằng phương pháp khử Gauss (tự xây dựng).")
 st.markdown("---")
 
-# TẠO 2 TABS
+#tạo 2 tab
 tab1, tab2 = st.tabs(["CÔNG CỤ TÙY CHỈNH (Nhập liệu)", "BÀI TOÁN ĐÁNH GIÁ (So sánh 3 mô hình)"])
 
-# ============================================================
-# TAB 1: CODE CỦA FILE 1 (ÁP DỤNG THUẬT TOÁN FILE 2)
-# ============================================================
+#nhập liệu cũ
 with tab1:
     st.header("1. Cài đặt & Nhập liệu")
     phuong_thuc_nhap = st.selectbox(
@@ -152,7 +148,7 @@ with tab1:
             mau_do_thi = '#FF4B4B'
 
             try:
-                # SỬ DỤNG HÀM TỰ VIẾT TỪ FILE 2 (Khử Gauss)
+                #khử gauss
                 if "Tuyến tính" in loai_ham:
                     a0, a1 = linear_regression(du_lieu_x, du_lieu_y, n_points)
                     chuoi_phuong_trinh = f"y = {a1:.4f}x {'+' if a0 >=0 else '-'} {abs(a0):.4f}"
@@ -302,13 +298,13 @@ with tab2:
             y_pred_exp = [a_exp * math.exp(b_exp * x) for x in x_data_f2]
             mse_exp, rmse_exp = calculate_errors(y_data_f2, y_pred_exp)
 
-            # Tự động thay đổi đơn vị theo dạng dữ liệu
+            #Tự động thay đổi đơn vị theo dạng dữ liệu
             is_sample_data = (phuong_thuc_nhap_tab2 == "Dữ liệu mẫu (Case Study Giá nhà - 30 điểm)")
             don_vi_y = " (USD)" if is_sample_data else ""
             nhan_truc_x = "Diện tích (sq ft)" if is_sample_data else "Trục X"
             nhan_truc_y = "Giá bán (USD)" if is_sample_data else "Trục Y"
 
-            # Đánh giá và hiển thị bảng so sánh
+            #Đánh giá và hiển thị bảng so sánh
             st.subheader("1. Bảng So Sánh Sai Số Các Mô Hình")
             df_eval = pd.DataFrame({
                 "Mô hình": ["Tuyến tính (y = a0 + a1*x)", "Đa thức Bậc 2", "Hàm mũ (y = a*e^(bx))"],
@@ -323,7 +319,7 @@ with tab2:
             
             st.success(f"**KẾT LUẬN:** Mô hình biểu diễn dữ liệu tốt nhất là **[{best_model}]** với RMSE nhỏ nhất: **{best_rmse:,.2f}{don_vi_y}**")
 
-            # --- PHÂN TÍCH TRỰC QUAN ---
+            #phân tích trực quan
             st.subheader("2. Phân tích Trực quan")
             
             X_np = np.array(x_data_f2)
@@ -339,7 +335,6 @@ with tab2:
             fig = plt.figure(figsize=(14, 9), facecolor="#F8FAFC")
             gs = gridspec.GridSpec(2, 3, figure=fig, hspace=0.45, wspace=0.35, top=0.88, bottom=0.08, left=0.07, right=0.97)
             
-            # Formatter thông minh (Hiển thị chữ K nếu số lớn > 10.000)
             if np.max(y_np) >= 10000:
                 fmt = plt.FuncFormatter(lambda v, _: f"{v/1e3:.0f}K")
             else:
@@ -380,7 +375,7 @@ with tab2:
             rmse_list = [rmse_lin, rmse_quad, rmse_exp]
             bar_colors = [COLORS["lin"], COLORS["quad"], COLORS["exp"]]
 
-            # Xử lý tự động nhãn dán Bar chart
+            #Xử lý tự động nhãn dán Bar chart
             if np.max(rmse_list) >= 10000:
                 bar_vals = [v/1e3 for v in rmse_list]
                 bar_label = f"RMSE (×10³{don_vi_y})"
