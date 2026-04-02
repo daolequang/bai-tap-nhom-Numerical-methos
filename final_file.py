@@ -5,6 +5,45 @@ import math
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
+
+def load_csv_data(file):
+    """
+    Đọc CSV linh hoạt:
+    - có / không có header
+    - dấu phân cách , hoặc ;
+    - tự lấy 2 cột đầu
+    - tự ép kiểu số
+    """
+    try:
+        # Đọc linh hoạt dấu phân cách
+        df = pd.read_csv(file, sep=None, engine='python', header=None)
+
+        # Bỏ dòng rỗng
+        df = df.dropna()
+
+        # Kiểm tra số cột
+        if df.shape[1] < 2:
+            raise ValueError("File CSV phải có ít nhất 2 cột.")
+
+        # Chỉ lấy 2 cột đầu
+        df = df.iloc[:, :2].copy()
+        df.columns = ['x', 'y']
+
+        # Ép kiểu số
+        df['x'] = pd.to_numeric(df['x'], errors='coerce')
+        df['y'] = pd.to_numeric(df['y'], errors='coerce')
+
+        # Loại dòng không hợp lệ
+        df = df.dropna()
+
+        if len(df) == 0:
+            raise ValueError("Không có dữ liệu hợp lệ sau khi xử lý.")
+
+        return df
+
+    except Exception as e:
+        raise ValueError(f"Lỗi khi đọc file CSV: {e}")
+
 #cấu hình trang
 st.set_page_config(page_title="Hệ thống Xấp xỉ Hàm số", page_icon="📈", layout="wide")
 
@@ -96,12 +135,11 @@ with tab1:
         file_tai_len = st.file_uploader("Chọn tệp CSV (Cột 1: x, Cột 2: y)", type=["csv"], key="file_t1")
         if file_tai_len is not None:
             try:
-                bang_tam = pd.read_csv(file_tai_len, header=None)
-                if len(bang_tam.columns) >= 2:
-                    bang_du_lieu = pd.DataFrame({'x': bang_tam.iloc[:, 0], 'y': bang_tam.iloc[:, 1]}).astype(float)
-                    st.success("Tải dữ liệu thành công!")
-                else:
-                    st.error("File CSV phải có ít nhất 2 cột.")
+                try:
+                    bang_du_lieu = load_csv_data(file_tai_len)
+                    st.success(f"Tải dữ liệu thành công! ({len(bang_du_lieu)} điểm)")
+                except Exception as loi:
+                    st.error(str(loi))
             except Exception as loi:
                 st.error(f"Lỗi khi đọc file: {loi}")
 
@@ -247,14 +285,14 @@ with tab2:
         file_tai_len_t2 = st.file_uploader("Chọn tệp CSV (Cột 1: x, Cột 2: y)", type=["csv"], key="file_t2")
         if file_tai_len_t2 is not None:
             try:
-                bang_tam_t2 = pd.read_csv(file_tai_len_t2, header=None)
-                if len(bang_tam_t2.columns) >= 2:
-                    x_data_f2 = bang_tam_t2.iloc[:, 0].astype(float).tolist()
-                    y_data_f2 = bang_tam_t2.iloc[:, 1].astype(float).tolist()
+                try:
+                    bang_tam_t2 = load_csv_data(file_tai_len_t2)
+                    x_data_f2 = bang_tam_t2['x'].tolist()
+                    y_data_f2 = bang_tam_t2['y'].tolist()
                     du_lieu_hop_le_tab2 = True
-                    st.success("Tải dữ liệu thành công!")
-                else:
-                    st.error("File CSV phải có ít nhất 2 cột.")
+                    st.success(f"Tải dữ liệu thành công! ({len(bang_tam_t2)} điểm)")
+                except Exception as loi:
+                    st.error(str(loi))
             except Exception as loi:
                 st.error(f"Lỗi khi đọc file: {loi}")
 
